@@ -1,9 +1,8 @@
-# The preprocessing.py file contains any code for reading inputs and any preprocessing necessary to make your algorithm work.
-
-#PREPROCESSING .TBL FILES TO CSV
 import csv
 import os
 
+
+#PREPROCESSING .TBL FILES TO CSV
 def tbl_to_csv(filename):
     csv = open("".join([filename, ".csv"]), "w+")
 
@@ -17,7 +16,6 @@ def tbl_to_csv(filename):
         csv.write(line)
     tbl.close()
     csv.close()
-
 
 # Main
 filenames = [
