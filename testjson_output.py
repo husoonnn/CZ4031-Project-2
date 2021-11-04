@@ -2,6 +2,7 @@ import psycopg2
 import preprocessing
 import interface
 
+
 def connect():
     """ Connect to the PostgreSQL database server """
     conn = None
@@ -49,14 +50,31 @@ def get_json():
         params = preprocessing.config()
         conn = psycopg2.connect(**params)
         cur = conn.cursor()
-        cur.execute(retrieveInput())
+        cur.execute("""EXPLAIN (ANALYZE, VERBOSE, FORMAT JSON)
+select
+	l_orderkey,
+	o_orderdate,
+	o_shippriority
+from
+	customer,
+	orders,
+	lineitem
+where
+	c_mktsegment = ':1'
+	and c_custkey = o_custkey
+	and l_orderkey = o_orderkey""")
         rows = cur.fetchall()
-        print("The number of parts: ", cur.rowcount)
-        for row in rows:
-            print(row)
+        print(json.dumps(rows))
+       
+        # for i in range(len(data)):
+        #     my_str = data.replace("'","\"")
+        #     print(my_str)
+        # rows = cur.fetchall()
+        # print("The number of parts: ", cur.rowcount)
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
+
     finally:
         if conn is not None:
             conn.close()

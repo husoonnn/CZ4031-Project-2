@@ -13,7 +13,7 @@ def connect():
     conn = None
     try:
         # read connection parameters
-        params = config()
+        params = preprocessing.config()
 
         # connect to the PostgreSQL server
         print('Connecting to the PostgreSQL database...')
@@ -58,8 +58,6 @@ def get_json():
         cur.execute(retrieveInput())
         rows = cur.fetchall()
         print(json.dumps(rows))
-
-
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -68,9 +66,6 @@ def get_json():
             conn.close()
 
     
-# To close communication with Postgresql
-cur.close() 
-conn.close()
 
 def retrieveInput():
     inputValue=query_text.get('1.0', 'end-1c')
