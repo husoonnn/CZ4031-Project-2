@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import font, ttk
 import preprocessing
 import sqlparse
+import json
 import psycopg2
 
 def connect():
@@ -56,9 +57,9 @@ def get_json():
         cur = conn.cursor()
         cur.execute(retrieveInput())
         rows = cur.fetchall()
-        print("The number of parts: ", cur.rowcount)
-        for row in rows:
-            print(row)
+        print(json.dumps(rows))
+
+
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -70,6 +71,7 @@ def get_json():
 # To close communication with Postgresql
 cur.close() 
 conn.close()
+
 def retrieveInput():
     inputValue=query_text.get('1.0', 'end-1c')
     return inputValue
