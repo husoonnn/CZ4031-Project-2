@@ -1,6 +1,7 @@
 import json
 import tkinter as tk
 from tkinter import font, ttk, messagebox
+from typing import Text
 from node_types import ATTRIBUTE
 import sqlparse
 import node_types
@@ -218,42 +219,69 @@ class QueryFrame(tk.Frame):
             self.text.tag_remove(node_type, '1.0', 'end')
 
 
-class TableFrame(tk.Frame):
-    def __init__(self, root):
-        tk.Frame.__init__(self, root)
-        table_view_style = ttk.Style()
-        table_view_style.configure('Treeview', font=('Google Sans Display', 12))
-        table_view_style.configure('Treeview.Heading', font=('Google Sans Display', 14, 'bold'))
-        self.table_view = ttk.Treeview(self)
-        self.table_view['columns'] = ['Value']
-        self.table_view.column('#0', minwidth=0, width=700) #, stretch=tk.NO
-        self.table_view.heading('#0', text='Analysis', anchor='w')
-        self.table_view.grid(row=0, column=0, sticky='nswe')
+# class TableFrame(tk.Frame):
+#     def __init__(self, root):
+#         tk.Frame.__init__(self, root)
+#         table_view_style = ttk.Style()
+#         table_view_style.configure('Treeview', font=('Google Sans Display', 12))
+#         table_view_style.configure('Treeview.Heading', font=('Google Sans Display', 14, 'bold'))
+#         self.table_view = ttk.Treeview(self)
+#         self.table_view['columns'] = ['Value']
+#         self.table_view.column('#0', minwidth=0, width=700) #, stretch=tk.NO
+#         self.table_view.heading('#0', text='Analysis', anchor='w')
+#         self.table_view.grid(row=0, column=0, sticky='nswe')
 
-        self.scrollbar = tk.Scrollbar(self, orient='vertical', command=self.table_view.yview)
-        self.table_view.configure(yscrollcommand=self.scrollbar.set)
-        # self.scrollbar.grid(row=0, column=1, sticky='ns')
+#         self.scrollbar = tk.Scrollbar(self, orient='vertical', command=self.table_view.yview)
+#         self.table_view.configure(yscrollcommand=self.scrollbar.set)
+#         # self.scrollbar.grid(row=0, column=1, sticky='ns')
 
-        self.rowconfigure(0, weight=1)
-        self.columnconfigure(0, weight=1)
+#         self.rowconfigure(0, weight=1)
+#         self.columnconfigure(0, weight=1)
         
 
+#     def show_node_info(self, node):
+#         raw_json = node.raw_json
+#         print("HIIII", raw_json)
+#         self.table_view.delete(*self.table_view.get_children())
+#         for index, (key, value) in enumerate(raw_json.items()):
+#             # self.table_view.insert('', index+1, text=key, values=[value])
+#             if key == "Node Type":
+#                 for operations in ATTRIBUTE:
+#                     if operations == value.upper():
+#                         operation_type = ATTRIBUTE[operations]
+            
+#             if key in operation_type:
+#                 B = str(key) + ": " + str(value)
+#                 self.table_view.insert('', index+1, text=B)
+class AnalysisFrame(tk.Frame):
+    def __init__(self, root):
+        tk.Frame.__init__(self, root)
+        self.text_font = font.Font(family='Fira Code Retina', size=12)
+        self.text = tk.Text(self, height=10, font=self.text_font)
+        self.text.grid(row=1, column=0)
+        self.scrollbar = tk.Scrollbar(self, orient='vertical', command=self.text.yview)
+        self.scrollbar.grid(row=1, column=1, sticky='ns')
+        self.text.configure(yscrollcommand=self.scrollbar.set)
+
+        for node_type, color in NODE_COLORS.items():
+            self.text.tag_configure(node_type, background=color[0], foreground=color[1])
+        self.text.tag_configure('OTHER', background='#ff9800', foreground='black')
+
+        self.index_map = {}
+        self.query = None      
+
     def show_node_info(self, node):
+        self.node = node
         raw_json = node.raw_json
-        print("HIIII", raw_json)
-        self.table_view.delete(*self.table_view.get_children())
+        self.text.delete('1.0', 'end')
         for index, (key, value) in enumerate(raw_json.items()):
-            # self.table_view.insert('', index+1, text=key, values=[value])
             if key == "Node Type":
                 for operations in ATTRIBUTE:
                     if operations == value.upper():
                         operation_type = ATTRIBUTE[operations]
-            
             if key in operation_type:
-                B = str(key) + ": " + str(value)
-                self.table_view.insert('', index+1, text=B)
-
-
+                B = str(key) + ": " + str(value) + '\n'
+                self.text.insert('end', B)       
 
 def execute_query(root_widget, query):
     plan = get_json()
@@ -273,8 +301,8 @@ def execute_query(root_widget, query):
     query_frame.set_query(query)
     query_frame.grid(row=0, column=0, sticky='eswn')
 
-    table_frame = TableFrame(top_level)
-    table_frame.grid(row=1, column=0, sticky='eswn')
+    analysis_frame = AnalysisFrame(top_level)
+    analysis_frame.grid(row=1, column=0, sticky='eswn')
 
     tree_frame = TreeFrame(top_level)
     tree_frame.grid(row=0, column=1, rowspan=2)
@@ -284,7 +312,7 @@ def execute_query(root_widget, query):
     match_dict = annotation.build_invert_relation(query, root_node)
 
     def on_click_listener(node):
-        table_frame.show_node_info(node)
+        analysis_frame.show_node_info(node)
 
     def on_hover_listener(node):
         if node in match_dict:
