@@ -1,6 +1,7 @@
 import json
 import tkinter as tk
-from tkinter import font, ttk
+from tkinter import font, ttk, messagebox
+from node_types import ATTRIBUTE
 import sqlparse
 import node_types
 import psycopg2
@@ -30,7 +31,7 @@ NODE_COLORS = {node_type: color
 
 conn = psycopg2.connect(
     host="localhost",
-    database="TPC-H",
+    database="TCP-H",
     user="postgres",
     password="password")
 
@@ -77,7 +78,7 @@ def get_json():
     try:
         conn = psycopg2.connect(
             host="localhost",
-            database="TPC-H",
+            database="TCP-H",
             user="postgres",
             password="password")
         
@@ -88,6 +89,7 @@ def get_json():
 
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
+        messagebox.showerror("Error",error)
         print(error)
     finally:
         if conn is not None:
@@ -240,38 +242,13 @@ class TableFrame(tk.Frame):
 
         self.table_view.delete(*self.table_view.get_children())
         for index, (key, value) in enumerate(raw_json.items()):
-            if key == 'Hash Join':
-                
-                self.table_view.insert('', index + 1, text=key, values=[value])
-            # self.table_view.insert('', index + 1, text=key, values=[value])
-            # if value == "Seq Scan":
-            #     self.table_view.insert('', index + 1, text=key, values=[value])
-            # if key == "Output":
-            #     A.append(value)
-            # if key == "Hash Cond":
-            #     A.append(value)
-            #     # self.table_view.insert('', index+1, values=[value])
-            # if key == "Relation Name":
-            #     A.append(value)
-            # if key == "Node Type":
-            #     A.append(value)
-                # self.table_view.insert('', index+1, text=[value])
-            # else:
-            #     self.table_view.insert('', index + 1, text=key, values=[value])
-            
-        # print("HELLOOOOOOOOOOOOOO")
-        # print(A)
-        # for i in A.length:
-        #     A[i+1]
-        # B = A[0] + ": " + A[1]
-        # for i in A.length:
-        #     A[i+1]
-        # print(type(B))
-        # print(B)
-        # self.table_view.insert('', index+1, text=B)
-
-            # if key == "Relation Name":
-            #     self.table_view.insert('', index + 1, text=key, values=[value])
+            if key == "Node Type":
+                for operations in ATTRIBUTE:
+                    if operations == value.upper():
+                        operation_type = ATTRIBUTE[operations]
+            if key in operation_type:
+                B = str(key) + ": " + str(value)
+                self.table_view.insert('', index+1, text=B)
 
 
 
