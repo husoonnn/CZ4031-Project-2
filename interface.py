@@ -31,7 +31,7 @@ NODE_COLORS = {node_type: color
 
 conn = psycopg2.connect(
     host="localhost",
-    database="TCP-H",
+    database="TPC-H",
     user="postgres",
     password="password")
 
@@ -78,7 +78,7 @@ def get_json():
     try:
         conn = psycopg2.connect(
             host="localhost",
-            database="TCP-H",
+            database="TPC-H",
             user="postgres",
             password="password")
         
@@ -226,7 +226,7 @@ class TableFrame(tk.Frame):
         table_view_style.configure('Treeview.Heading', font=('Google Sans Display', 14, 'bold'))
         self.table_view = ttk.Treeview(self)
         self.table_view['columns'] = ['Value']
-        self.table_view.column('#0', minwidth=0, width=600, stretch=tk.NO)
+        self.table_view.column('#0', minwidth=0, width=700) #, stretch=tk.NO
         self.table_view.heading('#0', text='Analysis', anchor='w')
         self.table_view.grid(row=0, column=0, sticky='nswe')
 
@@ -236,17 +236,19 @@ class TableFrame(tk.Frame):
 
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
+        
 
     def show_node_info(self, node):
-        A = []
         raw_json = node.raw_json
-        print("HEREEEEEEEEEEEEEEEEEEEEE", raw_json)
+        print("HIIII", raw_json)
         self.table_view.delete(*self.table_view.get_children())
         for index, (key, value) in enumerate(raw_json.items()):
+            # self.table_view.insert('', index+1, text=key, values=[value])
             if key == "Node Type":
                 for operations in ATTRIBUTE:
                     if operations == value.upper():
                         operation_type = ATTRIBUTE[operations]
+            
             if key in operation_type:
                 B = str(key) + ": " + str(value)
                 self.table_view.insert('', index+1, text=B)
@@ -255,8 +257,6 @@ class TableFrame(tk.Frame):
 
 def execute_query(root_widget, query):
     plan = get_json()
-    print("JSON SUCCESSFULLY PASSED")
-
     plan = plan[2:-2]
     
     plan = json.loads(plan)
@@ -288,7 +288,6 @@ def execute_query(root_widget, query):
 
     def on_hover_listener(node):
         if node in match_dict:
-            print("NODESSSSSS", node)
             for start, end in match_dict[node]:
                 query_frame.highlight_text(start, end, node.node_type)
 
