@@ -95,9 +95,6 @@ def get_json():
     print("success")
     return x
     
-# To close communication with Postgresql
-cur.close() 
-conn.close()
 
 def retrieveInput():
     inputValue=query_text.get('1.0', 'end-1c')
