@@ -34,6 +34,7 @@ def build_tree(plan_list, parent=None):
             setattr(node, "Index Name", plan["Index Name"])
         setattr(node, "raw_json", raw_json)
         result_list.append(node)
+        
     return result_list
 
 def build_relation(query_formatted, tree):
