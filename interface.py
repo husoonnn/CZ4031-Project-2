@@ -223,13 +223,13 @@ class TableFrame(tk.Frame):
         table_view_style.configure('Treeview.Heading', font=('Google Sans Display', 14, 'bold'))
         self.table_view = ttk.Treeview(self)
         self.table_view['columns'] = ['Value']
-        self.table_view.column('#0', minwidth=0, width=200, stretch=tk.NO)
-        self.table_view.heading('#0', text='Name', anchor='w')
+        self.table_view.column('#0', minwidth=0, width=600, stretch=tk.NO)
+        self.table_view.heading('#0', text='Analysis', anchor='w')
         self.table_view.grid(row=0, column=0, sticky='nswe')
 
         self.scrollbar = tk.Scrollbar(self, orient='vertical', command=self.table_view.yview)
         self.table_view.configure(yscrollcommand=self.scrollbar.set)
-        self.scrollbar.grid(row=0, column=1, sticky='ns')
+        # self.scrollbar.grid(row=0, column=1, sticky='ns')
 
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
@@ -237,25 +237,38 @@ class TableFrame(tk.Frame):
     def show_node_info(self, node):
         A = []
         raw_json = node.raw_json
+
         self.table_view.delete(*self.table_view.get_children())
         for index, (key, value) in enumerate(raw_json.items()):
-            #self.table_view.insert('', index + 1, text=key, values=[value])
+            if key == 'Hash Join':
+                
+                self.table_view.insert('', index + 1, text=key, values=[value])
+            # self.table_view.insert('', index + 1, text=key, values=[value])
             # if value == "Seq Scan":
             #     self.table_view.insert('', index + 1, text=key, values=[value])
-            if key == "Hash Cond":
-                A.append(value)
-                print(value)
-                # self.table_view.insert('', index+1, values=[value])
-            if key == "Node Type":
-                A.append(value)
-                print(key)
-                self.table_view.insert('', index+1, text=[value])
-
-        print(A)
-        B = A[0]+A[1]
-        print(type(B))
-        print(B)
-        
+            # if key == "Output":
+            #     A.append(value)
+            # if key == "Hash Cond":
+            #     A.append(value)
+            #     # self.table_view.insert('', index+1, values=[value])
+            # if key == "Relation Name":
+            #     A.append(value)
+            # if key == "Node Type":
+            #     A.append(value)
+                # self.table_view.insert('', index+1, text=[value])
+            # else:
+            #     self.table_view.insert('', index + 1, text=key, values=[value])
+            
+        # print("HELLOOOOOOOOOOOOOO")
+        # print(A)
+        # for i in A.length:
+        #     A[i+1]
+        # B = A[0] + ": " + A[1]
+        # for i in A.length:
+        #     A[i+1]
+        # print(type(B))
+        # print(B)
+        # self.table_view.insert('', index+1, text=B)
 
             # if key == "Relation Name":
             #     self.table_view.insert('', index + 1, text=key, values=[value])
