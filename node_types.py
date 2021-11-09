@@ -12,6 +12,14 @@ KEY_PROPERTY = {'LIMIT': ['Plan Rows'], 'SORT': ['Sort Key'], 'NESTED LOOP': [],
                 'BITMAP INDEX SCAN': ['Index Cond', 'Filter', 'Alias'],
                 'CTE SCAN': ['Index Cond', 'Filter', 'Alias']}
 
+ATTRIBUTE = {'LIMIT': ['Plan Rows'], 'SORT': ['Sort Method', 'Sort Key'], 'NESTED LOOP': [], 'MERGE JOIN': ['Merge Cond'],
+            'HASH': ['Output'], 'HASH JOIN': ['Hash Cond', 'Output'], 'AGGREGATE': ['Group Key'], 'HASHAGGREGATE': ['Group Key'],
+            'SEQ SCAN': ['Relation Name'], 'INDEX SCAN': ['Index Cond'],
+            'INDEX ONLY SCAN': ['Index Cond'],
+            'BITMAP HEAP SCAN': ['Recheck Cond'],
+            'BITMAP INDEX SCAN': ['Index Cond'],
+            'CTE SCAN': ['Index Cond']}
+
 """
 Possible keywords that indicate a new operation
 """
