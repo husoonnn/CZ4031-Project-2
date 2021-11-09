@@ -104,7 +104,7 @@ class TreeFrame(tk.Frame):
     def __init__(self, root):
         tk.Frame.__init__(self, root)
         self.button_font = font.Font(family='Google Sans Display', size=12, weight='bold')
-        self.canvas = tk.Canvas(self, background='bisque')
+        self.canvas = tk.Canvas(self, background= '#c5ded2')
         self.canvas.grid(row=0, column=0)
 
         self._on_hover_listener = None
@@ -142,8 +142,9 @@ class TreeFrame(tk.Frame):
         right = -1
         top = y1
         bottom = -1
+        #1FBFE0
         button = tk.Button(self.canvas, text=node.node_type, padx=12,
-                           bg='#1FBFE0', fg='white', font=self.button_font, anchor='center')
+                           bg='#7d8ed1', fg='white', font=self.button_font, anchor='center')
         button.bind('<Button-1>', lambda event: self._on_click(node))
         button.bind('<Enter>', lambda event: self._on_hover(node))
         button.bind('<Leave>', lambda event: self._on_hover_end(node))
@@ -237,12 +238,12 @@ class TableFrame(tk.Frame):
     def show_node_info(self, node):
         A = []
         raw_json = node.raw_json
-
+        print("HEREEEEEEEEEEEEEEEEEEEEE", raw_json)
         self.table_view.delete(*self.table_view.get_children())
         for index, (key, value) in enumerate(raw_json.items()):
             if key == 'Hash Join':
-                
                 self.table_view.insert('', index + 1, text=key, values=[value])
+            
             # self.table_view.insert('', index + 1, text=key, values=[value])
             # if value == "Seq Scan":
             #     self.table_view.insert('', index + 1, text=key, values=[value])
