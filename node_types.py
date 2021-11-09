@@ -1,8 +1,3 @@
-"""copied from zpiao"""
-"""
-Only consider following nodes so far, full list of nodes please consult source code
-https://github.com/postgres/postgres/blob/master/src/backend/commands/explain.c#L814
-"""
 NODE_TYPES = ['LIMIT', 'SORT', 'NESTED LOOP', 'MERGE JOIN', 'HASH', 'HASH JOIN', 'AGGREGATE', 'HASHAGGREGATE',
               'SEQ SCAN', 'INDEX SCAN', 'INDEX ONLY SCAN', 'BITMAP HEAP SCAN', 'BITMAP INDEX SCAN', 'CTE SCAN']
 

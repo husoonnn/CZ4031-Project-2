@@ -1,5 +1,5 @@
 from anytree import AnyNode, RenderTree, PreOrderIter
-import node_type 
+import node_types
 import copy 
 import re 
 
@@ -16,8 +16,8 @@ def build_tree(plan_list, parent=None):
             node = AnyNode(id = node_type, node_type=node_type, parent=parent)
 
         # Setting the key attributes that are going to be used for searching later
-        if node_type in node_type.KEY_PROPERTY:
-            key_properties = node_type.KEY_PROPERTY[node_type]
+        if node_type in node_types.KEY_PROPERTY:
+            key_properties = node_types.KEY_PROPERTY[node_type]
             for key_property in key_properties:
                 if key_property in plan:
                     setattr(node, key_property, plan[key_property])
@@ -57,10 +57,10 @@ def build_invert_relation(query_formatted, tree):
     match_dict = {}  # Has structure {node object : [list of tuples of index]}
     tokens = tokenize_query(query_formatted)
     for node in PreOrderIter(tree):
-        if getattr(node, 'id') not in node_type.KEY_PROPERTY:
+        if getattr(node, 'id') not in node_types.KEY_PROPERTY:
             continue
         else:
-            for field in node_type.KEY_PROPERTY[getattr(node, 'id')]:
+            for field in node_types.KEY_PROPERTY[getattr(node, 'id')]:
                 if not hasattr(node, field):
                     continue
                 value = getattr(node, field)
@@ -81,10 +81,10 @@ def search_tree(token, root):
     matched_pos = []
     for node in PreOrderIter(root):
         # If a node is not defined in our searchable list, skip it
-        if getattr(node, 'id') not in node_type.KEY_PROPERTY:
+        if getattr(node, 'id') not in node_types.KEY_PROPERTY:
             continue
         else:
-            for field in node_type.KEY_PROPERTY[getattr(node, 'id')]:
+            for field in node_types.KEY_PROPERTY[getattr(node, 'id')]:
                 if not hasattr(node, field):
                     continue
                 value = getattr(node, field)
@@ -148,7 +148,7 @@ def tokenize_query(query_formatted):
         print('tokenized line: ' + str(tokenized_line))
         for token in tokenized_line:
             token = token.strip(';')
-            if token.upper() is not '' and token.upper() not in node_type.KEYWORDS:
+            if token.upper() is not '' and token.upper() not in node_types.KEYWORDS:
                 regex_matches = re.finditer(r'([ (,])' + token + '($| |\)|,)', lines[i])
                 for matched in regex_matches:
                     tokens[token] = (matched.start() + processed_lines_len, matched.end() + processed_lines_len)
