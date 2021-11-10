@@ -340,7 +340,7 @@ if __name__ == '__main__':
     query_label = tk.Label(root, text='Enter your SQL query here', font=label_font)
     query_text = tk.Text(root, font=text_font, height=20)
 
-    execute_button = tk.Button(root, text='EXECUTE', padx=12, bg='#1FBFE0', fg='white', font=button_font,
+    execute_button = tk.Button(root, text='EXECUTE', padx=12, bg='#7d8ed1', fg='white', font=button_font,
                                  anchor='center', command=lambda: get_json())
 
     execute_button.bind('<Button-1>', lambda event: execute_query(root, retrieveInput()))
