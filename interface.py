@@ -20,7 +20,7 @@ def get_json(inputValue):
                 password="password")
             
             cur = conn.cursor()
-            cur.execute(inputValue)
+            cur.execute("EXPLAIN (ANALYZE, VERBOSE, FORMAT JSON)" + inputValue)
             rows = cur.fetchall()
             x = json.dumps(rows)
 
@@ -86,7 +86,6 @@ COLORS = [
 
 NODE_COLORS = {node_type: color
             for node_type, color in zip(node_types.NODE_TYPES, COLORS)}
-
 
 conn = psycopg2.connect(
     host="localhost",

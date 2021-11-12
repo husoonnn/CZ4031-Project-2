@@ -12,7 +12,6 @@ def read_json(plan_path):
 
     return plan_json
 
-
 def read_query(query_path): 
     # query_path = str(input("SQL query path: "))
 

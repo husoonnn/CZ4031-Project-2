@@ -149,7 +149,7 @@ def tokenize_query(query_formatted):
         print('tokenized line: ' + str(tokenized_line))
         for token in tokenized_line:
             token = token.strip(';')
-            if token.upper() is not '' and token.upper() not in node_types.KEYWORDS:
+            if token.upper() != '' and token.upper() not in node_types.KEYWORDS:
                 regex_matches = re.finditer(r'([ (,])' + token + '($| |\)|,)', lines[i])
                 for matched in regex_matches:
                     tokens[token] = (matched.start() + processed_lines_len, matched.end() + processed_lines_len)
