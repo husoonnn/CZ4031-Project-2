@@ -13,6 +13,7 @@ def get_json(inputValue):
         conn = None
         x = None 
         try:
+            #connect to postgres in this format
             conn = psycopg2.connect(
                 host="localhost",
                 database="TPC-H",
@@ -34,6 +35,7 @@ def get_json(inputValue):
         print("success")
         return x
 
+#function to connect to the PostgreSQL database
 def connect():
         """ Connect to the PostgreSQL database server """
         conn = None
@@ -66,18 +68,18 @@ def connect():
                 print('Database connection closed.')
         cur = conn.cursor()
 
-
+#14 colors for the 14 different node types
 COLORS = [
-    ('#f44336', 'black'),
+    ('#ff6459', 'black'),
     ('#e91e63', 'black'),
     ('#9c27b0', 'white'),
     ('#673ab7', 'white'),
-    ('#3f51b5', 'white'),
+    ('#3f51b5', 'black'),
     ('#2196f3', 'black'),
     ('#03a9f4', 'black'),
     ('#00bcd4', 'black'),
     ('#009688', 'black'),
-    ('#4caf50', 'black'),
+    ('#47d34d', 'black'),
     ('#8bc34a', 'black'),
     ('#cddc39', 'black'),
     ('#ffeb3b', 'black'),
@@ -87,6 +89,7 @@ COLORS = [
 NODE_COLORS = {node_type: color
             for node_type, color in zip(node_types.NODE_TYPES, COLORS)}
 
+#GUI for displaying the tree 
 class TreeFrame(tk.Frame):
     def __init__(self, root):
         tk.Frame.__init__(self, root)
@@ -129,7 +132,6 @@ class TreeFrame(tk.Frame):
         right = -1
         top = y1
         bottom = -1
-        #1FBFE0
         button = tk.Button(self.canvas, text=node.node_type, padx=12,
                         bg='#7d8ed1', fg='white', font=self.button_font, anchor='center')
         button.bind('<Button-1>', lambda event: self._on_click(node))
@@ -154,7 +156,7 @@ class TreeFrame(tk.Frame):
             self.canvas.create_line(x_mid, bbox[3], child_mid_x, child_bbox[1], width=2, arrow=tk.FIRST)
         return left, top, right, bottom
 
-
+#GUI for displaying the input query on the second page
 class QueryFrame(tk.Frame):
     def __init__(self, root):
         tk.Frame.__init__(self, root)
@@ -202,6 +204,7 @@ class QueryFrame(tk.Frame):
         for node_type in node_types.NODE_TYPES + ['OTHER']:
             self.text.tag_remove(node_type, '1.0', 'end')
 
+#GUI for displaying the analysis from the tree to the analysis frame
 class AnalysisFrame(tk.Frame):
     def __init__(self, root):
         tk.Frame.__init__(self, root)
@@ -232,7 +235,7 @@ class AnalysisFrame(tk.Frame):
                 B = str(key) + ": " + str(value) + '\n'
                 self.text.insert('end', B)       
 
-
+#executing the input query, linking to analysis page
 def execute_query(root_widget, query):
     plan = get_json(query)
     plan = plan[2:-2]
