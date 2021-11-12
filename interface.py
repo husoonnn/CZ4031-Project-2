@@ -94,14 +94,13 @@ class TreeFrame(tk.Frame):
     def __init__(self, root):
         tk.Frame.__init__(self, root)
         self.button_font = font.Font(family='Google Sans Display', size=12, weight='bold')
-        self.label_font = font.Font(family='Google Sans Display', size=12)
+        self.label_font = font.Font(family='Google Sans Display', size=10)
         self.canvas = tk.Canvas(self, background= '#c5ded2')
         self.canvas.grid(row=0, column=1)
 
         #label
-        
-        self.query_label = tk.Label(self, text='Click on the\n node to view \n analysis!', font = self.label_font, bg='#c5ded2')
-        self.query_label.grid(sticky=tk.N+ tk.W, row=0, column = 1, padx=12, pady=(12, 0))
+        # self.query_label = tk.Label(self, text='Click on the\n node to view \n analysis!', font = self.label_font, bg='#c5ded2')
+        # self.query_label.grid(sticky=tk.N+ tk.W, row=0, column = 1, padx=12, pady=(12, 0))
         
         self._on_hover_listener = None
         self._on_click_listener = None
@@ -259,15 +258,14 @@ def execute_query(root_widget, query):
 
     query_frame = QueryFrame(top_level)
     query_frame.set_query(query)
-    query_frame.grid(row=0, column=0, sticky='eswn')
+    
+    query_frame.grid(row=0, column=0, sticky='ew')
 
     analysis_frame = AnalysisFrame(top_level)
-    analysis_frame.grid(row=1, column=0, sticky='eswn')
-
-    
+    analysis_frame.grid(row=1, column=0, sticky='ew')
 
     tree_frame =  TreeFrame(top_level)
-    tree_frame.grid(row=0, column=1, rowspan=2)
+    tree_frame.grid(row=0, column=1, rowspan=2, sticky = 'w')
 
     root_node = annotation.build_tree([plan[0]['Plan']])[0]
     match_dict = annotation.build_invert_relation(query, root_node)
