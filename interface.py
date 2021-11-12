@@ -1,7 +1,6 @@
 import json
 import tkinter as tk
-from tkinter import font, ttk, messagebox
-from typing import Text
+from tkinter import font, messagebox
 from node_types import ATTRIBUTE
 import sqlparse
 import node_types
@@ -95,7 +94,6 @@ conn = psycopg2.connect(
     user="postgres",
     password="password")
 
-    
 class TreeFrame(tk.Frame):
     def __init__(self, root):
         tk.Frame.__init__(self, root)

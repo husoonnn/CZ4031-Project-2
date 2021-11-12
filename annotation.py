@@ -1,4 +1,4 @@
-from anytree import AnyNode, RenderTree, PreOrderIter
+from anytree import AnyNode, PreOrderIter
 import node_types
 import copy 
 import re 
@@ -114,17 +114,17 @@ def search_query(value, tokens, query_formatted):
         for match in regex_matches:
             matched_pos.append((match.start(), match.end()))
 
-    # for token, position in tokens.items():  # position is a tuple of (start idx, end idx)
-    #
-    #     # Assume value can be either a list of string or a string. Could it also be dict?
-    #     if isinstance(value, list):  # value is a list of string
-    #         for v in value:
-    #             if token in v:
-    #                 matched_pos.append(position)
-    #                 break
-    #     else:  # value is string
-    #         if token in str(value):
-    #             matched_pos.append(position)
+    for token, position in tokens.items():  # position is a tuple of (start idx, end idx)
+    
+        # Assume value can be either a list of string or a string. Could it also be dict?
+        if isinstance(value, list):  # value is a list of string
+            for v in value:
+                if token in v:
+                    matched_pos.append(position)
+                    break
+        else:  # value is string
+            if token in str(value):
+                matched_pos.append(position)
 
     if len(matched_pos) == 0:
         return None
