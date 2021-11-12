@@ -1,9 +1,9 @@
+#A complete list of node types to be returned from PostgresSQL query plan
 NODE_TYPES = ['LIMIT', 'SORT', 'NESTED LOOP', 'MERGE JOIN', 'HASH', 'HASH JOIN', 'AGGREGATE', 'HASHAGGREGATE',
               'SEQ SCAN', 'INDEX SCAN', 'INDEX ONLY SCAN', 'BITMAP HEAP SCAN', 'BITMAP INDEX SCAN', 'CTE SCAN']
 
-"""
-Key attribute in a node that will help to identify which SQL query correspond to this node
-"""
+
+#Key attribute in a node that will help to identify which SQL query correspond to this node
 KEY_PROPERTY = {'LIMIT': ['Plan Rows'], 'SORT': ['Sort Key'], 'NESTED LOOP': [], 'MERGE JOIN': ['Merge Cond'],
                 'HASH': [], 'HASH JOIN': ['Hash Cond'], 'AGGREGATE': ['Group Key'], 'HASHAGGREGATE': ['Group Key'],
                 'SEQ SCAN': ['Relation Name', 'Filter'], 'INDEX SCAN': ['Index Cond', 'Filter'],
@@ -12,24 +12,13 @@ KEY_PROPERTY = {'LIMIT': ['Plan Rows'], 'SORT': ['Sort Key'], 'NESTED LOOP': [],
                 'BITMAP INDEX SCAN': ['Index Cond', 'Filter', 'Alias'],
                 'CTE SCAN': ['Index Cond', 'Filter', 'Alias']}
 
+#Used for visualization 
 ATTRIBUTE = {'LIMIT': ['Plan Rows'], 'SORT': ['Sort Method', 'Sort Key'], 'NESTED LOOP': [], 'MERGE JOIN': ['Merge Cond'],
             'HASH': ['Output'], 'HASH JOIN': ['Hash Cond', 'Output'], 'AGGREGATE': ['Group Key'], 'HASHAGGREGATE': ['Group Key'],
             'SEQ SCAN': ['Relation Name'], 'INDEX SCAN': ['Index Cond'], 'GATHER MERGE': ['Output'],
-            'INDEX ONLY SCAN': ['Index Cond'],
-            'BITMAP HEAP SCAN': ['Recheck Cond'],
-            'BITMAP INDEX SCAN': ['Index Cond'],
-            'CTE SCAN': ['Index Cond']}
+            'INDEX ONLY SCAN': ['Index Cond'], 'BITMAP HEAP SCAN': ['Recheck Cond'], 'BITMAP INDEX SCAN': ['Index Cond'], 'CTE SCAN': ['Index Cond']}
 
-"""
-Possible keywords that indicate a new operation
-"""
-PREFIX_KEYWORD = ['SELECT', '(SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'GROUP BY', 'HAVING', 'INNER JOIN',
-                  'LEFT OUTER JOIN', 'RIGHT OUTER JOIN', 'FULL OUTER JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'FULL JOIN',
-                  'JOIN', 'LIMIT', 'OFFSET']
-
-"""
-A complete list of keywords in Postgresql
-"""
+#A complete list of keywords in Postgresql
 KEYWORDS = ['A', 'ABORT', 'ABS', 'ABSENT', 'ABSOLUTE', 'ACCESS', 'ACCORDING', 'ACTION', 'ADA', 'ADD', 'ADMIN',
             'AFTER', 'AGGREGATE', 'ALL', 'ALLOCATE', 'ALSO', 'ALTER', 'ALWAYS', 'ANALYSE', 'ANALYZE', 'AND', 'ANY',
             'ARE', 'ARRAY', 'ARRAY_AGG', 'ARRAY_MAX_CARDINALITY', 'AS', 'ASC', 'ASENSITIVE', 'ASSERTION',
