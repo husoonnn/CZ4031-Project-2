@@ -87,12 +87,6 @@ COLORS = [
 NODE_COLORS = {node_type: color
             for node_type, color in zip(node_types.NODE_TYPES, COLORS)}
 
-conn = psycopg2.connect(
-    host="localhost",
-    database="TPC-H",
-    user="postgres",
-    password="password")
-
 class TreeFrame(tk.Frame):
     def __init__(self, root):
         tk.Frame.__init__(self, root)
