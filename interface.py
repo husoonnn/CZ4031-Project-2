@@ -91,8 +91,12 @@ class TreeFrame(tk.Frame):
     def __init__(self, root):
         tk.Frame.__init__(self, root)
         self.button_font = font.Font(family='Google Sans Display', size=12, weight='bold')
+        self.label_font = font.Font(family='Google Sans Display', size=12)
         self.canvas = tk.Canvas(self, background= '#c5ded2')
-        self.canvas.grid(row=0, column=0)
+        self.canvas.grid(row=0, column=1)
+
+        self.query_label = tk.Label(self, text='Click on the\n node to view \n analysis!', font = self.label_font, bg='#c5ded2')
+        self.query_label.grid(sticky=tk.N+ tk.W, row=0, column = 1, padx=12, pady=(12, 0))
 
         self._on_hover_listener = None
         self._on_click_listener = None
@@ -222,6 +226,7 @@ class AnalysisFrame(tk.Frame):
     def show_node_info(self, node):
         self.node = node
         raw_json = node.raw_json
+        print(raw_json)
         self.text.delete('1.0', 'end')
         for index, (key, value) in enumerate(raw_json.items()):
             if key == "Node Type":
