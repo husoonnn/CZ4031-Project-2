@@ -95,7 +95,12 @@ class TreeFrame(tk.Frame):
         tk.Frame.__init__(self, root)
         self.button_font = font.Font(family='Google Sans Display', size=12, weight='bold')
         self.canvas = tk.Canvas(self, background= '#c5ded2')
-        self.canvas.grid(row=0, column=0)
+        self.canvas.grid(row=0, column=1)
+
+        #label
+        self.label_font = font.Font(family='Google Sans Display', size=12)
+        self.query_label = tk.Label(self, text='Click on the\n node to view \n analysis!', font = self.label_font, bg='#c5ded2')
+        self.query_label.grid(sticky=tk.N+ tk.W, row=0, column = 1, padx=12, pady=(12, 0))
         
         self._on_hover_listener = None
         self._on_click_listener = None
