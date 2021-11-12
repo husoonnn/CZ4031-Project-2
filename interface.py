@@ -96,7 +96,7 @@ class TreeFrame(tk.Frame):
         self.button_font = font.Font(family='Google Sans Display', size=12, weight='bold')
         self.canvas = tk.Canvas(self, background= '#c5ded2')
         self.canvas.grid(row=0, column=0)
-
+        
         self._on_hover_listener = None
         self._on_click_listener = None
         self._on_hover_end_listener = None
@@ -210,6 +210,7 @@ class AnalysisFrame(tk.Frame):
         tk.Frame.__init__(self, root)
         self.text_font = font.Font(family='Fira Code Retina', size=12)
         self.text = tk.Text(self, height=10, font=self.text_font)
+        
         self.text.grid(row=1, column=0)
         self.scrollbar = tk.Scrollbar(self, orient='vertical', command=self.text.yview)
         self.scrollbar.grid(row=1, column=1, sticky='ns')
@@ -241,8 +242,7 @@ def execute_query(root_widget, query):
     plan = plan[2:-2]
     
     plan = json.loads(plan)
-    print(plan)
-    
+
     top_level = tk.Toplevel(root_widget)
     
     top_level.title('Visualization')
@@ -257,10 +257,11 @@ def execute_query(root_widget, query):
     analysis_frame = AnalysisFrame(top_level)
     analysis_frame.grid(row=1, column=0, sticky='eswn')
 
+    
+
     tree_frame =  TreeFrame(top_level)
     tree_frame.grid(row=0, column=1, rowspan=2)
 
-    print(type(plan))
     root_node = annotation.build_tree([plan[0]['Plan']])[0]
     match_dict = annotation.build_invert_relation(query, root_node)
 
