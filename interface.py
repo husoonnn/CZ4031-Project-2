@@ -8,6 +8,65 @@ import node_types
 import psycopg2
 import annotation
 
+def get_json(inputValue):
+        """ query parts from the parts table """
+        
+        conn = None
+        x = None 
+        try:
+            conn = psycopg2.connect(
+                host="localhost",
+                database="TPC-H",
+                user="postgres",
+                password="password")
+            
+            cur = conn.cursor()
+            cur.execute(inputValue)
+            rows = cur.fetchall()
+            x = json.dumps(rows)
+
+            cur.close()
+        except (Exception, psycopg2.DatabaseError) as error:
+            messagebox.showerror("Error",error)
+            print(error)
+        finally:
+            if conn is not None:
+                conn.close()
+        print("success")
+        return x
+
+def connect():
+        """ Connect to the PostgreSQL database server """
+        conn = None
+        try:
+            # read connection parameters
+            params = conn
+
+            # connect to the PostgreSQL server
+            print('Connecting to the PostgreSQL database...')
+            conn = psycopg2.connect(**params)
+            
+            # create a cursor
+            cur = conn.cursor()
+            
+        # execute a statement
+            print('PostgreSQL database version:')
+            cur.execute('SELECT version()')
+
+            # display the PostgreSQL database server version
+            db_version = cur.fetchone()
+            print(db_version)
+        
+        # close the communication with the PostgreSQL
+            cur.close()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+        finally:
+            if conn is not None:
+                conn.close()
+                print('Database connection closed.')
+        cur = conn.cursor()
+
 
 COLORS = [
     ('#f44336', 'black'),
@@ -27,7 +86,7 @@ COLORS = [
 ]
 
 NODE_COLORS = {node_type: color
-               for node_type, color in zip(node_types.NODE_TYPES, COLORS)}
+            for node_type, color in zip(node_types.NODE_TYPES, COLORS)}
 
 
 conn = psycopg2.connect(
@@ -36,73 +95,7 @@ conn = psycopg2.connect(
     user="postgres",
     password="password")
 
-def connect():
-    """ Connect to the PostgreSQL database server """
-    conn = None
-    try:
-        # read connection parameters
-        params = conn
-
-        # connect to the PostgreSQL server
-        print('Connecting to the PostgreSQL database...')
-        conn = psycopg2.connect(**params)
-		
-        # create a cursor
-        cur = conn.cursor()
-        
-	# execute a statement
-        print('PostgreSQL database version:')
-        cur.execute('SELECT version()')
-
-        # display the PostgreSQL database server version
-        db_version = cur.fetchone()
-        print(db_version)
-       
-	# close the communication with the PostgreSQL
-        cur.close()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-            print('Database connection closed.')
-
-
-
-cur = conn.cursor()
-
-def get_json():
-    """ query parts from the parts table """
     
-    conn = None
-    x = None 
-    try:
-        conn = psycopg2.connect(
-            host="localhost",
-            database="TPC-H",
-            user="postgres",
-            password="password")
-        
-        cur = conn.cursor()
-        cur.execute(retrieveInput())
-        rows = cur.fetchall()
-        x = json.dumps(rows)
-
-        cur.close()
-    except (Exception, psycopg2.DatabaseError) as error:
-        messagebox.showerror("Error",error)
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-    print("success")
-    return x
-    
-
-def retrieveInput():
-    inputValue=query_text.get('1.0', 'end-1c')
-    return inputValue
-
 class TreeFrame(tk.Frame):
     def __init__(self, root):
         tk.Frame.__init__(self, root)
@@ -147,7 +140,7 @@ class TreeFrame(tk.Frame):
         bottom = -1
         #1FBFE0
         button = tk.Button(self.canvas, text=node.node_type, padx=12,
-                           bg='#7d8ed1', fg='white', font=self.button_font, anchor='center')
+                        bg='#7d8ed1', fg='white', font=self.button_font, anchor='center')
         button.bind('<Button-1>', lambda event: self._on_click(node))
         button.bind('<Enter>', lambda event: self._on_hover(node))
         button.bind('<Leave>', lambda event: self._on_hover_end(node))
@@ -218,41 +211,6 @@ class QueryFrame(tk.Frame):
         for node_type in node_types.NODE_TYPES + ['OTHER']:
             self.text.tag_remove(node_type, '1.0', 'end')
 
-
-# class TableFrame(tk.Frame):
-#     def __init__(self, root):
-#         tk.Frame.__init__(self, root)
-#         table_view_style = ttk.Style()
-#         table_view_style.configure('Treeview', font=('Google Sans Display', 12))
-#         table_view_style.configure('Treeview.Heading', font=('Google Sans Display', 14, 'bold'))
-#         self.table_view = ttk.Treeview(self)
-#         self.table_view['columns'] = ['Value']
-#         self.table_view.column('#0', minwidth=0, width=700) #, stretch=tk.NO
-#         self.table_view.heading('#0', text='Analysis', anchor='w')
-#         self.table_view.grid(row=0, column=0, sticky='nswe')
-
-#         self.scrollbar = tk.Scrollbar(self, orient='vertical', command=self.table_view.yview)
-#         self.table_view.configure(yscrollcommand=self.scrollbar.set)
-#         # self.scrollbar.grid(row=0, column=1, sticky='ns')
-
-#         self.rowconfigure(0, weight=1)
-#         self.columnconfigure(0, weight=1)
-        
-
-#     def show_node_info(self, node):
-#         raw_json = node.raw_json
-#         print("HIIII", raw_json)
-#         self.table_view.delete(*self.table_view.get_children())
-#         for index, (key, value) in enumerate(raw_json.items()):
-#             # self.table_view.insert('', index+1, text=key, values=[value])
-#             if key == "Node Type":
-#                 for operations in ATTRIBUTE:
-#                     if operations == value.upper():
-#                         operation_type = ATTRIBUTE[operations]
-            
-#             if key in operation_type:
-#                 B = str(key) + ": " + str(value)
-#                 self.table_view.insert('', index+1, text=B)
 class AnalysisFrame(tk.Frame):
     def __init__(self, root):
         tk.Frame.__init__(self, root)
@@ -283,8 +241,9 @@ class AnalysisFrame(tk.Frame):
                 B = str(key) + ": " + str(value) + '\n'
                 self.text.insert('end', B)       
 
+
 def execute_query(root_widget, query):
-    plan = get_json()
+    plan = get_json(query)
     plan = plan[2:-2]
     
     plan = json.loads(plan)
@@ -304,7 +263,7 @@ def execute_query(root_widget, query):
     analysis_frame = AnalysisFrame(top_level)
     analysis_frame.grid(row=1, column=0, sticky='eswn')
 
-    tree_frame = TreeFrame(top_level)
+    tree_frame =  TreeFrame(top_level)
     tree_frame.grid(row=0, column=1, rowspan=2)
 
     print(type(plan))
@@ -327,32 +286,5 @@ def execute_query(root_widget, query):
     tree_frame.set_on_hover_end_listener(on_hover_end_listener)
 
     tree_frame.draw_tree(root_node)
-    
-if __name__ == '__main__':
-    root = tk.Tk()
-    root.title('Input Query')
-    root.iconphoto(False, tk.PhotoImage(file='tree.png'))
-
-    button_font = font.Font(family='Google Sans Display', size=12, weight='bold')
-    text_font = font.Font(family='Fira Code Retina', size=12)
-    label_font = font.Font(family='Google Sans Display', size=12)
-
-    query_label = tk.Label(root, text='Enter your SQL query here', font=label_font)
-    query_text = tk.Text(root, font=text_font, height=20)
-
-    execute_button = tk.Button(root, text='EXECUTE', padx=12, bg='#7d8ed1', fg='white', font=button_font,
-                                 anchor='center', command=lambda: get_json())
-
-    execute_button.bind('<Button-1>', lambda event: execute_query(root, retrieveInput()))
-
-    query_scrollbar = tk.Scrollbar(root, orient='vertical', command=query_text.yview)
- 
-    query_text.configure(yscrollcommand=query_scrollbar.set)
-  
-    query_label.grid(row=0, sticky='w', padx=12, pady=(12, 0))
-    query_text.grid(row=1, padx=(12, 0))
-    query_scrollbar.grid(row=1, column=1, sticky='ns', padx=(0, 12))
-
-    execute_button.grid(row=4, sticky='e', padx=12, pady=12)
-
-    root.mainloop()
+        
+   
