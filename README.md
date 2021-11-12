@@ -5,7 +5,7 @@ CONNECTING YOUR QUERY WITH THE EXECUTION PLAN
 
 In Terminal, ensure you are in the folder of your repository
 
-You will need to install all the following libaries:
+You will need to install all the following libraries:
 1. `pip install json`
 2. `pip install tkinter`
 3. `pip install sqlparse`
