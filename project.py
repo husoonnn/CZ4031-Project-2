@@ -1,22 +1,12 @@
-import json
 import tkinter as tk
-from tkinter import font, ttk, messagebox
-from typing import Text
+from tkinter import font
 import interface
-from node_types import ATTRIBUTE
-import sqlparse
-import node_types
-import psycopg2
-import annotation
 
 def retrieveInput():
     inputValue=query_text.get('1.0', 'end-1c')
     return inputValue
 
 if __name__ == '__main__':
-    
-    # root = tk.Tk()
-    # root.mainloop()
     root = tk.Tk()
     root.title('Input Query')
     root.iconphoto(False, tk.PhotoImage(file='tree.png'))
