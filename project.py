@@ -15,8 +15,6 @@ def retrieveInput():
 
 if __name__ == '__main__':
     
-    # root = tk.Tk()
-    # root.mainloop()
     root = tk.Tk()
     root.title('Input Query')
     root.iconphoto(False, tk.PhotoImage(file='tree.png'))
