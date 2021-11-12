@@ -20,3 +20,5 @@ All required packages should have been installed!
 2. Enter your query into the input and press 'Execute' button
 3. You can hover or click on to any nodes of the tree to view the annotations.
 
+### Refer to this link to access all the CSV files as the files are too big to be uploaded for submission
+[Google drive](https://drive.google.com/drive/folders/1e05kJ7G_V4EiSOQi4Fucc7NQU9KjLf5f)
